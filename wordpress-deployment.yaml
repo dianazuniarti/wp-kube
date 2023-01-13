@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: wordpress-deployment
-  namespace: wordpress-project
+  namespace: testingnamespace
   labels:
     app: wordpress-app
 spec:
@@ -49,7 +49,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: wordpress-pvc
-  namespace: wordpress-project
+  namespace: testingnamespace
 spec:
   resources:
     requests:
@@ -62,7 +62,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: wordpress-service
-  namespace: wordpress-project
+  namespace: testingnamespace
 spec:
   selector:
     app: wordpress-app
