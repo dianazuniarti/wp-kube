@@ -3,7 +3,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: mariadb-secret
-  namespace: wordpress-project
+  namespace: testingnamespace
 type: Opaque
 data:
   db_root_password: QmVvbmNha3QwcAo=
@@ -13,7 +13,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mariadb-deployment
-  namespace: wordpress-project
+  namespace: testingnamespace
 spec:
   selector:
     matchLabels:
@@ -60,7 +60,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mariadb-pvc
-  namespace: wordpress-project
+  namespace: testingnamespace
 spec:
   resources:
     requests:
@@ -73,7 +73,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mariadb-service
-  namespace: wordpress-project
+  namespace: testingnamespace
 spec:
   selector:
     app: mariadb-app
