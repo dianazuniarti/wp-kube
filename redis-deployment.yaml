@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-deployment
+  namespace: wordpress-project
+spec:
+  selector:
+    matchLabels:
+      app: redis-app
+  template:
+    metadata:
+      labels:
+        app: redis-app
+    spec:
+      containers:
+      - name: redis-app
+        image: redis:7.0.5-alpine
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+        ports:
+        - containerPort: 6379
+          name: redis-port
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-service
+  namespace: wordpress-project
+spec:
+  selector:
+    app: redis-app
+  ports:
+  - port: 6379
+    targetPort: redis-port

@@ -1,0 +1,73 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordpress-deployment
+  namespace: wordpress-project
+  labels:
+    app: wordpress-app
+spec:
+  selector:
+    matchLabels:
+      app: wordpress-app
+  template:
+    metadata:
+      labels:
+        app: wordpress-app
+    spec:
+      containers:
+      - name: wordpress
+        image: wordpress:6.0.2-php7.4-apache
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "256m"
+        ports:
+        - containerPort: 80
+          name: wordpress-port
+        volumeMounts:
+          - mountPath: /var/www/html
+            name: wordpress-storage
+        env:
+          - name: WORDPRESS_DB_HOST
+            value: mariadb-service
+          - name: WORDPRESS_DB_USER
+            value: "wordpress"
+          - name: WORDPRESS_DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: db_password
+                name: mariadb-secret
+          - name: WORDPRESS_DB_NAME
+            value: "wordpress"
+      volumes:
+        - name: wordpress-storage
+          persistentVolumeClaim:
+            claimName: wordpress-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: wordpress-pvc
+  namespace: wordpress-project
+spec:
+  resources:
+    requests:
+      storage: 512Mi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wordpress-service
+  namespace: wordpress-project
+spec:
+  selector:
+    app: wordpress-app
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: wordpress-port
+
