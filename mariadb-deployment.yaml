@@ -3,7 +3,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: mariadb-secret
-  namespace: testingnamespace
+  namespace: deployment
 type: Opaque
 data:
   db_root_password: QmVvbmNha3QwcAo=
@@ -13,7 +13,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mariadb-deployment
-  namespace: testingnamespace
+  namespace: deployment
 spec:
   selector:
     matchLabels:
@@ -60,7 +60,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mariadb-pvc
-  namespace: testingnamespace
+  namespace: deployement
 spec:
   resources:
     requests:
@@ -73,7 +73,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mariadb-service
-  namespace: testingnamespace
+  namespace: deployement
 spec:
   selector:
     app: mariadb-app
