@@ -60,7 +60,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mariadb-pvc
-  namespace: deployement
+  namespace: deployment
 spec:
   resources:
     requests:
@@ -73,7 +73,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mariadb-service
-  namespace: deployement
+  namespace: deployment
 spec:
   selector:
     app: mariadb-app
